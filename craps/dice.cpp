@@ -92,9 +92,84 @@ void playRockPaperScissors() {
     cout << "\nGood bye!";
 }
 
+
+int randomlySelectOneofThreeDoors() {
+    int doorWithCar = 0;
+    double rnd = rand() / static_cast<double>(RAND_MAX + 1);
+    doorWithCar = static_cast<int>(rnd * 3);
+    return doorWithCar;
+}
+
+void playMontyHallGame() {
+
+    time_t seconds;
+    time(&seconds);
+    srand((unsigned int)seconds);
+
+    cout << "How many times do you want the simulation to run ? ";
+    int count;
+    cin >> count;
+
+    // d1, d2, d3
+    string doors[3] = {};
+
+    //setup the cars and goats
+    for (int i=0; i <= count; i++) {
+        int randomDoor = randomlySelectOneofThreeDoors();
+        doors[randomDoor] = "Car";
+        if (randomDoor == 0) {
+            //place goats in the other two
+            doors[1] = "Goat";
+            doors[2] = "Goat";
+        }
+        else if (randomDoor == 1) {
+            //place goats in the other two
+            doors[0] = "Goat";
+            doors[2] = "Goat";
+        }
+        else if (randomDoor == 2) {
+            //place goats in the other two
+            doors[0] = "Goat";
+            doors[1] = "Goat";
+        }
+    }
+
+    int countOriginalDoorWins = 0;
+    int countOtherUnopenedDoorWins = 0;
+
+
+    for (int j=0; j < count; j++) {
+        //pick a door
+        int selectedDoor = randomlySelectOneofThreeDoors();
+        //reveal whats behind the selected door 
+        cout << "Whats behind the original door? " << doors[selectedDoor] << endl;
+        //stick to the original door
+        if (doors[selectedDoor] == "Car") {
+            countOriginalDoorWins += 1;
+        }
+        int newSelection = -1;
+        //now select a door other than the original
+        do {
+            newSelection = randomlySelectOneofThreeDoors();
+        } while (newSelection == selectedDoor);
+        // the above loop will exit when the newSelection is either of the other two doors (other than the originalSelection)
+
+        //now see if the new selection has the car
+        cout << "Whats behin one of the unopened doors? " << doors[newSelection] << endl;
+        if (doors[newSelection] == "Car") {
+            countOtherUnopenedDoorWins += 1;
+        }
+
+    }
+
+    cout << "Percentage won if sticking to original door = " << (static_cast<double>(countOriginalDoorWins) / count) * 100 << "%\n";
+    cout << "Percentage won if other unopened door is selected = " << (static_cast<double>(countOtherUnopenedDoorWins) / count) * 100 << "%\n";
+}
+
 int main()
 {
     //doCoinToss();
-    playRockPaperScissors();
+    //playRockPaperScissors();
+    playMontyHallGame();
     return 0;
 }
