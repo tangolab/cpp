@@ -166,10 +166,81 @@ void playMontyHallGame() {
     cout << "Percentage won if other unopened door is selected = " << (static_cast<double>(countOtherUnopenedDoorWins) / count) * 100 << "%\n";
 }
 
+bool isLeapYear(int year) {
+    bool isLeapYear;
+    if (year % 4 == 0) {
+        if (year % 100 == 0) {
+            if (year % 400 == 0)
+                isLeapYear = true;
+            else
+                isLeapYear = false;
+        }
+        else
+            isLeapYear = true;
+    }
+    else
+        isLeapYear = false;
+    return isLeapYear;
+}
+
+int getMaxDaysInMonth(int month, bool isLeapYear) {
+    int maxDayOfTheMonth;
+    switch (month) {
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+        maxDayOfTheMonth = 30;
+        break;
+    case 2:
+        if (isLeapYear) {
+            maxDayOfTheMonth = 29;
+        }
+        else {
+            maxDayOfTheMonth = 28;
+        }
+        break;
+    default:
+        maxDayOfTheMonth = 30;
+    }
+    return maxDayOfTheMonth;
+}
+
+void validateDate() {
+    int day = 0, month = 0, year = 0;
+    do {
+        cout << "\nYear? (4 digits) ";
+        cin >> year;
+    } while (year < 1000 && year > 9999);
+
+    do {
+        cout << "\Day? (1 - 31) ";
+        cin >> day;
+    } while (day < 1 && day > 31);
+
+    do {
+        cout << "\nMonth? (1 - 12) ";
+        cin >> month;
+    } while (month < 1 && month > 12);
+
+    bool isLeapYr = isLeapYear(year);
+
+    int maxDays = getMaxDaysInMonth(month, isLeapYr);
+
+    cout << month << "/" << day << "/" << year;
+    if (day > maxDays) {
+        cout << " is not a valid calendar date!";
+    }
+    else {
+        cout << " is a valid calendar date!";
+    }
+}
+
 int main()
 {
     //doCoinToss();
     //playRockPaperScissors();
-    playMontyHallGame();
+    //playMontyHallGame();
+    validateDate();
     return 0;
 }
