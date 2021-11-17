@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <time.h>
 
+#include <stdio.h>
+
 using namespace std;
 //int coinToss() {
 //    return 1 + rand() % 2 ;
@@ -241,7 +243,6 @@ using namespace std;
 //}
 
 
-
 void isPalindromic(string input) {
     int last = input.length();
     bool isPalin = true;
@@ -250,21 +251,163 @@ void isPalindromic(string input) {
             isPalin = false;
         }
     }
-
     cout << input << (isPalin ? " IS " : " IS NOT ") << "PALINDROME \n";
+}
+
+
+string TTTGrid[3][3] = {
+    {" "," "," "},
+    {" "," "," "},
+    {" "," "," "}
+};
+
+void showTTTGrid() {
+    cout << "\n\t_____________\n";
+    for (int row = 0; row < 3; row++) {
+        cout << "\n\t| ";
+        for (int col = 0; col < 3; col++) {
+            cout << TTTGrid[row][col] << " | ";
+        }
+        cout << "\n\t_____________\n";
+    }
+}
+
+
+void initRandomizer() {
+    time_t seconds;
+    time(&seconds);
+    srand((unsigned int)seconds);
+}
+
+int generateRandomNumber(int max) {
+    double rnd = rand() / static_cast<double>(RAND_MAX + 1);
+    return static_cast<int>(rnd * max);
+}
+
+bool placeMarker(string marker, int row, int col) {
+    if (TTTGrid[row][col] == " ") {
+        TTTGrid[row][col] = marker;
+        return true;
+    }
+    else
+        return false;
+}
+
+void randomlyPlace(string marker) {
+    bool placed = false;
+    while (!placed) {
+        int row = generateRandomNumber(3);
+        int col = generateRandomNumber(3);
+        placed = placeMarker(marker, row, col);
+    }
+}
+
+bool didSpecifiedMarkerWin(string marker) {
+    if (TTTGrid[0][0] == marker && TTTGrid[0][1] == marker && TTTGrid[0][2] == marker ||
+        TTTGrid[1][0] == marker && TTTGrid[1][1] == marker && TTTGrid[1][2] == marker ||
+        TTTGrid[2][0] == marker && TTTGrid[2][1] == marker && TTTGrid[2][2] == marker ||
+
+        TTTGrid[0][0] == marker && TTTGrid[1][0] == marker && TTTGrid[2][0] == marker ||
+        TTTGrid[0][1] == marker && TTTGrid[1][1] == marker && TTTGrid[2][1] == marker ||
+        TTTGrid[0][2] == marker && TTTGrid[1][2] == marker && TTTGrid[2][2] == marker ||
+
+        TTTGrid[0][0] == marker && TTTGrid[1][1] == marker && TTTGrid[2][2] == marker ||
+        TTTGrid[2][0] == marker && TTTGrid[1][1] == marker && TTTGrid[0][2] == marker
+        )
+        return true;
+    else
+        return false;
+}
+
+int whoIsTheWinner() {
+    //CPU is "O"
+    if (didSpecifiedMarkerWin("O"))
+        return 1; 
+    else if (didSpecifiedMarkerWin("X"))
+        return 2; //YOU played "X";
+    else
+        return 3;
+}
+
+void acceptInput(int &row, int &col) {
+    cout << "Select Row Number (1-3, 0 to exit): ";
+    cin >> row;
+
+    cout << "Select Column Number (1-3, 0 to exit): ";
+    cin >> col;
+}
+
+bool isEndOfGame() {
+    int cellsFilled = 0;
+    for (int row = 0; row < 3; row++) {
+        for (int col = 0; col < 3; col++) {
+            if (TTTGrid[row][col]!=" ") {
+                cellsFilled += 1;
+            }
+        }
+    }
+    //cout << "\nfilled " << cellsFilled;
+    // game is over if all cells are filled or either the CPU or the player has already won 
+    return (cellsFilled > 8 || whoIsTheWinner() < 3);
+}
+
+void playTTT() {
+
+    initRandomizer();
+    //fill first two cells randomly and fairly
+    randomlyPlace("O");
+    randomlyPlace("X");
+    //notice that there is one more call to randomlyPlace("O"); inside the do loop
+
+    int inputRow = 0;
+    int inputCol = 0;
+
+    do {
+        do {
+            //CPU plays its turn
+            randomlyPlace("O");
+            //show the game board before accepting player input
+            showTTTGrid();
+            //check if the game is already over as CPU may have already won
+            if (!isEndOfGame()) {
+                //if CPU has not already won, accept player input
+                acceptInput(inputRow, inputCol);
+                //check to see if input is valid
+                if (inputRow > 3 || inputCol > 3 || inputRow < 1 || inputCol < 1) {
+                    //player entered values outside acceptable range, display error
+                    cout << "ERROR: Invalid input\n";
+                }
+                else {
+                    bool placed = placeMarker("X", inputRow - 1, inputCol - 1);
+                }
+            }
+        } while (!isEndOfGame() && (inputRow > 3 || inputCol > 3 || inputRow < 0 || inputCol < 0));
+    } while (!isEndOfGame());
+
+   // showTTTGrid();
+
+    switch (whoIsTheWinner()) {
+    case 1:
+        cout << "\n\n=======\n";
+        cout << "CPU Won\n";
+        cout << "=======";
+        break;
+    case 2:
+        cout << "\n\n==========\n";
+        cout << "You Won !!\m";
+        cout << "==========";
+        break;
+    case 3:
+        cout << "\n\n==============\n";
+        cout << "It is a DRAW!!";
+        cout << "==============";
+        break;
+    }
 }
 
 int main()
 {
-    string var;
-    cout << "Enter a string to test for palindrome : ";
-    cin >> var;
-
-    isPalindromic(var);
-    isPalindromic("deed");
-    isPalindromic("pop");
-    isPalindromic("dead");
-    isPalindromic("d");
+    playTTT();
 
     //doCoinToss();
     //playRockPaperScissors();
