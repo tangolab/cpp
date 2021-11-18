@@ -447,6 +447,8 @@ void calculateStdDev() {
 
     cout << setprecision(2);
     cout << "The average is " << mean << " with a standard deviation of " << stdDev;
+    //SAMPLE INPUT: 3,5,11,14,11
+    //SAMPLE OUTPUT: The average is 8.8 with a standard deviation of 4.1
 }
 
 int main()
