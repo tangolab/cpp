@@ -5,6 +5,8 @@
 #include <time.h>
 
 #include <stdio.h>
+#include <vector>
+#include <numeric>
 
 using namespace std;
 //int coinToss() {
@@ -330,23 +332,30 @@ int whoIsTheWinner() {
 }
 
 void acceptInput(int &row, int &col) {
-    cout << "Select Row Number (1-3, 0 to exit): ";
-    cin >> row;
 
-    cout << "Select Column Number (1-3, 0 to exit): ";
-    cin >> col;
+    do {
+        cout << "\nSelect Row Number (1-3, 0 to exit): ";
+        cin >> row;
+        if (row != 0) {
+            cout << "Select Column Number (1-3, 0 to exit): ";
+            cin >> col;
+        }
+    } while (row > 3 || col > 3 || row < 0 || col < 0);
 }
 
-bool isEndOfGame() {
+int countFilledCells() {
     int cellsFilled = 0;
     for (int row = 0; row < 3; row++) {
         for (int col = 0; col < 3; col++) {
-            if (TTTGrid[row][col]!=" ") {
+            if (TTTGrid[row][col] != " ") {
                 cellsFilled += 1;
             }
         }
     }
-    //cout << "\nfilled " << cellsFilled;
+    return cellsFilled;
+}
+bool isEndOfGame() {
+    int cellsFilled = countFilledCells();
     // game is over if all cells are filled or either the CPU or the player has already won 
     return (cellsFilled > 8 || whoIsTheWinner() < 3);
 }
@@ -372,17 +381,19 @@ void playTTT() {
             if (!isEndOfGame()) {
                 //if CPU has not already won, accept player input
                 acceptInput(inputRow, inputCol);
-                //check to see if input is valid
-                if (inputRow > 3 || inputCol > 3 || inputRow < 1 || inputCol < 1) {
-                    //player entered values outside acceptable range, display error
-                    cout << "ERROR: Invalid input\n";
-                }
-                else {
-                    bool placed = placeMarker("X", inputRow - 1, inputCol - 1);
+                if (inputRow != 0) {
+                    //check to see if input is valid
+                    if (inputRow > 3 || inputCol > 3 || inputRow < 1 || inputCol < 1) {
+                        //player entered values outside acceptable range, display error
+                        cout << "ERROR: Invalid input\n";
+                    }
+                    else {
+                        bool placed = placeMarker("X", inputRow - 1, inputCol - 1);
+                    }
                 }
             }
-        } while (!isEndOfGame() && (inputRow > 3 || inputCol > 3 || inputRow < 0 || inputCol < 0));
-    } while (!isEndOfGame());
+        } while (!isEndOfGame() && inputRow != 0 ); // exit if player wanted to exit by entering 0 for ROW 
+    } while (!isEndOfGame() && inputRow != 0);
 
    // showTTTGrid();
 
@@ -390,24 +401,59 @@ void playTTT() {
     case 1:
         cout << "\n\n=======\n";
         cout << "CPU Won\n";
-        cout << "=======";
+        cout << "=======\n";
         break;
     case 2:
         cout << "\n\n==========\n";
         cout << "You Won !!\m";
-        cout << "==========";
+        cout << "==========\n";
         break;
     case 3:
-        cout << "\n\n==============\n";
-        cout << "It is a DRAW!!";
-        cout << "==============";
+        if (countFilledCells() > 8) {
+            cout << "\n\n==============\n";
+            cout << "It is a DRAW!!\n";
+            cout << "==============\n";
+        }
+        else
+        {
+            cout << "\n\n==============\n";
+            cout << "You chose to quit\n";
+            cout << "=================\n";
+        }
         break;
     }
 }
 
+void calculateStdDev() {
+    vector<int> numbers;
+    int input = -99;
+    
+    do {
+        cout << "Enter a value (or -99 to quit): ";
+        cin >> input;
+        if(input != -99)
+            numbers.push_back(input);
+    } while (input != -99);
+
+    double mean = accumulate(numbers.begin(), numbers.end(), 0.0) / numbers.size();
+
+    double sum = 0;
+    
+    for (int val : numbers) {
+        sum += (val - mean) * (val - mean); // square of each value - mean
+    }
+
+    double stdDev = sqrt(sum / numbers.size());
+
+    cout << setprecision(2);
+    cout << "The average is " << mean << " with a standard deviation of " << stdDev;
+}
+
 int main()
 {
-    playTTT();
+    calculateStdDev();
+
+    //playTTT();
 
     //doCoinToss();
     //playRockPaperScissors();
