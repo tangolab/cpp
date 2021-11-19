@@ -484,10 +484,48 @@ void calculateStdDevUsingVector() {
     //SAMPLE OUTPUT: The average is 8.8 with a standard deviation of 4.1
 }
 
+void guessTheNumber() {
+    char ready;
+    int max = 100;
+    cout << "Think of a number between 1 and " << max << ". Ready? (Y/N) : ";
+    cin >> ready;
+
+    int guess = max / 2;
+
+    int last_max = max;
+    int last_min = 1;
+
+    if (ready == 'Y' || ready == 'y') {
+        int response = 0;
+        do {
+            cout << "CPU thinks it is between " << last_min << " and " << last_max << endl;
+
+            cout << "Is the number " << guess << " ? (1 = Higher, 2 = Lower, 3 = Exact) ";
+            cin >> response;
+
+            switch (response) {
+            case 1: // higher
+                last_min = guess;
+                guess += (last_max - guess) / 2;
+               // last_max = guess;
+                break;
+            case 2: // lower
+                last_max = guess;
+                guess -= (guess - last_min) / 2;
+                //last_min = guess;
+                break;
+            case 3: 
+                break;
+            }
+        } while (response != 3);
+    }
+}
+
 int main()
 {
-    calculateStdDevUsingVector();
-    calculateStdDevUsingArray();
+    //guessTheNumber();
+    //calculateStdDevUsingVector();
+    //calculateStdDevUsingArray();
     //playTTT();
 
     //doCoinToss();
