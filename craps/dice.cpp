@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <vector>
 #include <numeric>
+#include <fstream>
 
 using namespace std;
 //int coinToss() {
@@ -521,8 +522,65 @@ void guessTheNumber() {
     }
 }
 
+void reversingProblem() {
+
+    string path = "C:\\Users\\Lorrettus\\source\\repos\\craps\\craps\\scores.txt";
+    ifstream file(path);
+    if (file.is_open()) {
+        int score;
+        string name;
+        char coma;
+
+        int scores[100] = {};
+        string names[100] = {};
+
+        int record_count = 0;
+
+        while (file >> score >> coma >> name )
+        {
+            scores[record_count] = score;
+            names[record_count] = name;
+            record_count++;
+        }
+
+        //setup variable for sorting
+        bool flag = true;
+        //sort from highest to lowest
+        for (int outerIndex = 1; outerIndex < record_count && flag; outerIndex++) {
+            flag = false;
+            for (int innerIndex = 0; innerIndex < record_count; innerIndex++) {
+                //if the next one is bigger than the current one
+                if (scores[innerIndex + 1] > scores[innerIndex]) {
+                    //swap the scores
+                    int tempScore = scores[innerIndex];
+                    scores[innerIndex] = scores[innerIndex + 1];
+                    scores[innerIndex + 1] = tempScore;
+
+                    //also swap the name
+                    string tempName = names[innerIndex];
+                    names[innerIndex] = names[innerIndex + 1];
+                    names[innerIndex + 1] = tempName;
+
+                    flag = true;
+                }
+            }
+        }
+
+        //print output
+        for (int index = 0; index < record_count; index ++) {
+            cout << names[index] << " : " << scores[index] << endl;
+        }
+
+        file.close();
+    }
+    else {
+        cout << "Unable to open file - " << path << endl;
+    }
+}
+
 int main()
 {
+    reversingProblem();
     //guessTheNumber();
     //calculateStdDevUsingVector();
     //calculateStdDevUsingArray();
