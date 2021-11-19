@@ -424,7 +424,39 @@ void playTTT() {
     }
 }
 
-void calculateStdDev() {
+void calculateStdDevUsingArray() {
+    int numbers[100] = {};
+    int input = -99;
+    int currentItem = 0;
+    double sum = 0;
+    do {
+        cout << "Enter a value (or -99 to quit): ";
+        cin >> input;
+        if (input != -99)
+        {
+            numbers[currentItem++] = input;
+            sum += input;
+        }
+    } while (input != -99);
+
+    double mean = sum / currentItem;
+
+    double accumulatedSum = 0;
+
+    for (int x = 0; x < currentItem; x++) {
+        accumulatedSum += (numbers[x] - mean) * (numbers[x] - mean); // square of each value - mean
+    }
+
+    double stdDev = sqrt(accumulatedSum / currentItem);
+
+    cout << setprecision(2);
+    cout << "The average is " << mean << " with a standard deviation of " << stdDev << endl;
+    //SAMPLE INPUT: 3,5,11,14,11
+    //SAMPLE OUTPUT: The average is 8.8 with a standard deviation of 4.1
+
+}
+
+void calculateStdDevUsingVector() {
     vector<int> numbers;
     int input = -99;
     
@@ -437,24 +469,25 @@ void calculateStdDev() {
 
     double mean = accumulate(numbers.begin(), numbers.end(), 0.0) / numbers.size();
 
-    double sum = 0;
+    double accumulatedSum = 0;
     
     for (int val : numbers) {
-        sum += (val - mean) * (val - mean); // square of each value - mean
+        accumulatedSum += (val - mean) * (val - mean); // square of each value - mean
     }
 
-    double stdDev = sqrt(sum / numbers.size());
+
+    double stdDev = sqrt(accumulatedSum / numbers.size());
 
     cout << setprecision(2);
-    cout << "The average is " << mean << " with a standard deviation of " << stdDev;
+    cout << "The average is " << mean << " with a standard deviation of " << stdDev << endl;
     //SAMPLE INPUT: 3,5,11,14,11
     //SAMPLE OUTPUT: The average is 8.8 with a standard deviation of 4.1
 }
 
 int main()
 {
-    calculateStdDev();
-
+    calculateStdDevUsingVector();
+    calculateStdDevUsingArray();
     //playTTT();
 
     //doCoinToss();
