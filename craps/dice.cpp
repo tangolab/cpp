@@ -3,6 +3,7 @@
 #include <ctime>
 #include <iomanip>
 #include <time.h>
+#include <string>
 
 #include <stdio.h>
 #include <vector>
@@ -524,58 +525,57 @@ void guessTheNumber() {
 
 void reversingProblem() {
 
-    string path = "C:\\Users\\Lorrettus\\source\\repos\\craps\\craps\\scores.txt";
-    ifstream file(path);
-    if (file.is_open()) {
-        int score;
-        string name;
-        char coma;
 
-        int scores[100] = {};
-        string names[100] = {};
+    int scores[100] = {};
+    string names[100] = {};
 
-        int record_count = 0;
+    int record_count = 0;
 
-        while (file >> score >> coma >> name )
-        {
-            scores[record_count] = score;
-            names[record_count] = name;
-            record_count++;
-        }
+    cout << "How many students took the exam ? ";
 
-        //setup variable for sorting
-        bool flag = true;
-        //sort from highest to lowest
-        for (int outerIndex = 1; outerIndex < record_count && flag; outerIndex++) {
-            flag = false;
-            for (int innerIndex = 0; innerIndex < record_count; innerIndex++) {
-                //if the next one is bigger than the current one
-                if (scores[innerIndex + 1] > scores[innerIndex]) {
-                    //swap the scores
-                    int tempScore = scores[innerIndex];
-                    scores[innerIndex] = scores[innerIndex + 1];
-                    scores[innerIndex + 1] = tempScore;
+    cin >> record_count;
+    cin.ignore();
 
-                    //also swap the name
-                    string tempName = names[innerIndex];
-                    names[innerIndex] = names[innerIndex + 1];
-                    names[innerIndex + 1] = tempName;
+    for (int n = 0; n < record_count; n++)
+    {
 
-                    flag = true;
-                }
+        cout << "Student #" << n + 1 << " Name : ";
+        getline(cin, names[n]);
+
+       
+        cout << "Student #" << n + 1 << " Score : ";
+        cin >> scores[n];
+        cin.ignore();
+    }
+
+    //setup variable for sorting
+    bool flag = true;
+    //sort from highest to lowest
+    for (int outerIndex = 1; outerIndex < record_count && flag; outerIndex++) {
+        flag = false;
+        for (int innerIndex = 0; innerIndex < record_count; innerIndex++) {
+            //if the next one is bigger than the current one
+            if (scores[innerIndex + 1] > scores[innerIndex]) {
+                //swap the scores
+                int tempScore = scores[innerIndex];
+                scores[innerIndex] = scores[innerIndex + 1];
+                scores[innerIndex + 1] = tempScore;
+
+                //also swap the name
+                string tempName = names[innerIndex];
+                names[innerIndex] = names[innerIndex + 1];
+                names[innerIndex + 1] = tempName;
+
+                flag = true;
             }
         }
-
-        //print output
-        for (int index = 0; index < record_count; index ++) {
-            cout << names[index] << " : " << scores[index] << endl;
-        }
-
-        file.close();
     }
-    else {
-        cout << "Unable to open file - " << path << endl;
+
+    //print output
+    for (int index = 0; index < record_count; index ++) {
+        cout << names[index] << " : " << scores[index] << endl;
     }
+
 }
 
 int main()
