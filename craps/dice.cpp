@@ -578,9 +578,49 @@ void reversingProblem() {
 
 }
 
+void wordSeperation() {
+    //declare variables
+    char input[100];
+    int wordCounter = 0;
+
+    char output[100];
+    int i;
+    //input string
+    cout << "Enter a sentence: ";
+    cin >> input;
+
+    //seperate the words
+    for (i = 0; input[i] != 0; i++) {
+        // Check if it is an uppercase letter but not the first letter (i > 0)
+        if (input[i] >= 'A' && input[i] <= 'Z' && i > 0)
+        { 
+            //found an uppercase letter. Add a space to the output string 
+            output[i + wordCounter] = ' ';
+
+            //increment the number of words found. Length of the output string
+            //will be more than that of the input after adding spaces
+            wordCounter++;
+
+            //convert the letter to lowercase (by adding 32) 
+            //and copy it to the output string 
+            output[i + wordCounter] = input[i] + 32; 
+        }
+        else
+        {
+            output[i + wordCounter] = input[i];
+        }
+    }
+    //add string terminator to the output string
+    output[i + wordCounter] = 0;
+
+    //print the output
+    cout << endl << output;
+}
+
 int main()
 {
-    reversingProblem();
+    wordSeperation();
+    //reversingProblem();
     //guessTheNumber();
     //calculateStdDevUsingVector();
     //calculateStdDevUsingArray();
