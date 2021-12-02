@@ -624,10 +624,42 @@ void dateFormatting() {
         cout << month_name[month - 1 ] << " " << day << ", " << year;
 }
 
+int* reverseArray(int* numberList, int count) {
+    int *output = new int[count];
+    for (int i = 0; i < count; i++) {
+        output[i] = numberList[count - 1 - i];
+    }
+    return output;
+}
+
+void pointerProblem() {
+    int* numberList;
+    int* revArray;
+    int count;
+
+    cout << "How many numbers do you have in your array? ";
+    cin >> count;
+
+    numberList = new int[count];
+
+    for (int i = 0; i < count; i++) {
+        cout << "Enter value: ";
+        cin >> numberList[i];
+    }
+
+    revArray = reverseArray(numberList, count);
+
+    for (int i = 0; i < count; i++) {
+        cout << revArray[i] << " ";
+    }
+
+}
+
 int main()
 {
     // start set #6
-    dateFormatting();
+    pointerProblem();
+    //dateFormatting();
     //wordSeparation();
     // end set #6
 
