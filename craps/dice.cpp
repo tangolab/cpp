@@ -610,15 +610,12 @@ void dateFormatting() {
     char slash = '/';
 
     string month_name[] = { "January","Feb","March","April","May","June","July","August","September","October","November","December" };
+
     //input date
     cout << "Enter a date (mm/dd/yyyy): ";
-    //cin >> inputDate;
-
-
     cin >> day >> slash >> month >> slash >> year;
 
     //validate date
-
     if (!isValidateDate(day, month, year)) {
         cout << month << "/" << day << "/" << year << " is an invalid date" << endl;
     }
