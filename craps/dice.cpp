@@ -578,7 +578,7 @@ void reversingProblem() {
 
 }
 
-void wordSeperation() {
+void wordSeparation() {
     //declare variables
     char input[100];
     int wordCounter = 0;
@@ -619,7 +619,7 @@ void wordSeperation() {
 
 int main()
 {
-    wordSeperation();
+    wordSeparation();
     //reversingProblem();
     //guessTheNumber();
     //calculateStdDevUsingVector();
