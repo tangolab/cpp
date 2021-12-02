@@ -655,10 +655,104 @@ void pointerProblem() {
 
 }
 
+struct Bin {
+    string Description;
+    int PartsInBin;
+};
+
+bool addParts(Bin *theBin, int items) {
+    bool success = true;
+    if (theBin->PartsInBin + items <= 30)
+    { 
+        theBin->PartsInBin = theBin->PartsInBin + items;
+    }
+    else {
+        success = false;
+    }
+
+    return success;
+}
+
+bool removeParts(Bin *theBin, int items) {
+    bool success = true;
+    if (theBin->PartsInBin - items > -1) {
+        theBin->PartsInBin = theBin->PartsInBin - items;
+    }
+    else {
+        success = false;
+    }
+
+    return success;
+}
+
+Bin shelf[10] = {
+    {"Valve", 10},
+    {"Bearing", 5},
+    {"Bushing", 15},
+    {"Coupling", 21},
+    {"Flange", 7},
+    {"Gear", 5},
+    {"Gear Housing", 5},
+    {"Vacuum Gripper", 25},
+    {"Cable", 18},
+    {"Rod", 12}
+};
+
+void showShelf() {
+    cout << endl;
+    cout << setw(18) << "Description" << setw(11) << "Items" << endl;
+    cout << setw(18) << "============" << setw(11) << "=====" << endl;
+    for (int i = 0; i < 10; i++) {
+        cout << setw(2) << i + 1 << " " << setw(15) << shelf[i].Description << "\t" << shelf[i].PartsInBin << endl;
+    }
+}
+
+void inventoryProblem() {
+    int selection = 0;
+    char input = ' ';
+    int qty;
+
+    do {
+        showShelf();
+        do {
+            cout << "\nSelect a bin (1 - 10), 0 to Exit -> ";
+            cin >> selection;
+            if (selection > 0 && selection < 11) {
+                do {
+                    cout << "\nA to Add, R to Remove -> ";
+                    cin >> input;
+                } while (!(input == 'A' || input == 'R' || input == 'a' || input == 'r'));
+
+                do {
+                    cout << "\nHow many items? -> ";
+                    cin >> qty;
+                    if (qty < 1) {
+                        cout << "Quantity must be a positive number\n";
+                    }
+                } while (qty < 1);
+
+                switch (input) {
+                case 'A':
+                case 'a':
+                    if(!addParts(&shelf[selection - 1], qty))
+                        cout << "\n===> Bin cannot hold more that 30 items. <===\n";
+                    break;
+                case 'R':
+                case 'r':
+                    if (!removeParts(&shelf[selection - 1], qty))
+                        cout << "Not enough items to remove in bin #" << selection;
+                    break;
+                }
+            }
+        } while (selection < 0 && selection > 10);
+    } while (selection != 0);
+}
+
 int main()
 {
     // start set #6
-    pointerProblem();
+    inventoryProblem();
+    //pointerProblem();
     //dateFormatting();
     //wordSeparation();
     // end set #6
