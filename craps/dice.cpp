@@ -613,7 +613,7 @@ void dateFormatting() {
 
     //input date
     cout << "Enter a date (mm/dd/yyyy): ";
-    cin >> day >> slash >> month >> slash >> year;
+    cin >> month >> slash >> day >> slash >> year;
 
     //validate date
     if (!isValidateDate(day, month, year)) {
@@ -748,14 +748,75 @@ void inventoryProblem() {
     } while (selection != 0);
 }
 
+struct HourlyPaid {
+    int hoursWorked;
+    double hourlyRate;
+};
+
+struct Salaried {
+    double salary;
+    double bonus;
+};
+
+struct Income {
+    HourlyPaid hourly;
+    Salaried salaried;
+};
+
+void incomeProblem() {
+    
+    //declare variables
+    int incomeType;
+    Income income;
+
+    do {
+        //prompt for type of income
+        do {
+            cout << "1. Hourly Worker" << endl;
+            cout << "2. Salaried Worker" << endl;
+            cout << "0. Exit" << endl;
+            cout << endl << "Select worker type -> ";
+            cin >> incomeType;
+        } while (incomeType < 0 || incomeType > 2);
+
+        //Accept the income details based on the selected income type
+        switch (incomeType)
+        {
+        case 1: //Hourly
+            cout << "\nEnter the hourly rate: ";
+            cin >> income.hourly.hourlyRate;
+
+            cout << "Enter the number of hours worked: ";
+            cin >> income.hourly.hoursWorked;
+
+            //calculate total income
+            cout << "\nTotal Income: $" << fixed << setprecision(2) << income.hourly.hoursWorked * income.hourly.hourlyRate << endl << endl;
+            break;
+
+        case 2: //Salaried
+
+            cout << "\nEnter salary amount: ";
+            cin >> income.salaried.salary;
+
+            cout << "Enter bonus amount: ";
+            cin >> income.salaried.bonus;
+
+            //calculate total income
+            cout << "\nTotal Income: $" << fixed << setprecision(2) << income.salaried.salary + income.salaried.bonus << endl << endl;
+            break;
+        }
+    } while (incomeType != 0);
+}
+
 int main()
 {
-    // start set #6
-    inventoryProblem();
+    //start set #6
+    incomeProblem();
+    //inventoryProblem();
     //pointerProblem();
     //dateFormatting();
     //wordSeparation();
-    // end set #6
+    //end set #6
 
     //reversingProblem();
     //guessTheNumber();
